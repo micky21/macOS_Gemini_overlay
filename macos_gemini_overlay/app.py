@@ -63,7 +63,7 @@ class AppDelegate(NSObject):
     # The main application setup.
     def applicationDidFinishLaunching_(self, notification):
         # Run as accessory app
-        NSApp.setActivationPolicy_(NSApplicationActivationPolicyAccessory)
+        NSApp.setActivationPolicy_(NSApplicationActivationPolicyRegular)
         # Create a borderless, floating, resizable window
         self.window = AppWindow.alloc().initWithContentRect_styleMask_backing_defer_(
             NSMakeRect(500, 200, 550, 580),
@@ -71,7 +71,7 @@ class AppDelegate(NSObject):
             NSBackingStoreBuffered,
             False
         )
-        self.window.setLevel_(NSFloatingWindowLevel)
+        self.window.setLevel_(NSNormalWindowLevel)
         self.window.setCollectionBehavior_(
             NSWindowCollectionBehaviorCanJoinAllSpaces
             | NSWindowCollectionBehaviorStationary
@@ -342,3 +342,12 @@ class AppDelegate(NSObject):
     def appearanceDidChange_(self, notification):
         # Update the logo image when the system appearance changes
         self.updateStatusItemImage()
+
+    def windowDidResignKey_(self, notification):
+        """
+        Este método se activa automáticamente cuando la ventana pierde el foco 
+        (haces clic fuera, usas Cmd+Tab o abres otra app).
+        """
+        self.hideWindow_(None)
+        # Opcional: imprimir en consola para debug
+        # print("Ventana ocultada por pérdida de foco (Multitasking activo)")
